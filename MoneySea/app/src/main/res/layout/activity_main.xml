@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="swaggy.com.moneysea.MainActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+        <RelativeLayout
+            android:id="@+id/main_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
+    <RadioGroup
+        android:id="@+id/mian_rg"
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+
+        <RadioButton
+            android:id="@+id/main_borrow"
+            style="@style/main_tab_button"
+            android:drawableTop="@drawable/borrow_selector"
+            android:text="借贷"
+            android:textColor="#646464"
+            android:textSize="14sp"
+             />
+
+        <RadioButton
+            android:id="@+id/main_mine"
+            style="@style/main_tab_button"
+            android:drawableTop="@drawable/me_selector"
+            android:text="我的"
+            android:textColor="#646464"
+            android:textSize="14sp"
+            />
+
+    </RadioGroup>
+
+
+</LinearLayout>
