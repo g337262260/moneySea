@@ -22,6 +22,7 @@ import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
 import swaggy.com.moneysea.login.AuthActivity
 import swaggy.com.moneysea.model.FinishEvent
+import swaggy.com.moneysea.utils.SharedPreUtils
 import swaggy.com.moneysea.utils.StatusBarHeightUtil
 import java.util.*
 
@@ -97,9 +98,10 @@ class PerfectInfoActivity : Activity() {
         var data = gson.toJson(stringMap).toString()
         Log.e("data", data)
 
+        var mobile = SharedPreUtils.getString(this, "userName", "")
 
         val params = HashMap<String, String>()
-        params.put("mobile", "13261561970")
+        params.put("mobile", mobile)
         params.put("data", data)
         OkGo.post<WSResult<String>>(HttpContants.COMPLETE)
                 .cacheMode(CacheMode.NO_CACHE)

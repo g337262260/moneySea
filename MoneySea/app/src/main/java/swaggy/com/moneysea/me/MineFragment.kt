@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.lzy.okgo.OkGo
 import com.lzy.okgo.cache.CacheMode
 import com.lzy.okgo.model.Response
@@ -39,6 +40,8 @@ class MineFragment : Fragment(), View.OnClickListener {
     private var phone :String = ""
 
     private var complete:Int = 0
+
+    private var status:Int = 0
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -70,6 +73,7 @@ class MineFragment : Fragment(), View.OnClickListener {
                             ErrorCode.SUCCESS ->{
                                 var result = response.body().result
                                 mine_account!!.text = result.mobile
+                                status = result.status
                                 if (result.status==2) {
                                     //审核通过
                                     val drawable = resources.getDrawable(R.mipmap.pass)
@@ -124,24 +128,30 @@ class MineFragment : Fragment(), View.OnClickListener {
                 startActivity(Intent(activity, ChangePwdActivity::class.java))
             }
             R.id.mine_perfect_info -> {
-                startActivity(Intent(activity, PerfectInfoActivity::class.java))
-//                if (complete==1) {
-//                    Toast.makeText(activity,"信息已完善", Toast.LENGTH_SHORT).show()
-//                }else{
-//                    startActivity(Intent(activity, PerfectInfoActivity::class.java))
-//
-//                }
+//                startActivity(Intent(activity, PerfectInfoActivity::class.java))
+                if (complete==1) {
+                    Toast.makeText(activity,"信息已完善", Toast.LENGTH_SHORT).show()
+                }else{
+                    startActivity(Intent(activity, PerfectInfoActivity::class.java))
+
+                }
             }
             R.id.mine_borrow_progress -> {
-                if (isVisiable) {
-                    mine_borrow_progress.setImageDrawable(resources.getDrawable(R.mipmap.down))
-                    mine_progress.visibility = View.GONE
-                    isVisiable = false
-                } else {
-                    mine_borrow_progress.setImageDrawable(resources.getDrawable(R.mipmap.up))
-                    mine_progress.visibility = View.VISIBLE
-                    isVisiable = true
+                if (status==0) {
+                    Toast.makeText(activity,"您还未申请",Toast.LENGTH_SHORT).show()
+                }else{
+                    if (isVisiable) {
+                        mine_borrow_progress.setImageDrawable(resources.getDrawable(R.mipmap.down))
+                        mine_progress.visibility = View.GONE
+                        isVisiable = false
+                    } else {
+                        mine_borrow_progress.setImageDrawable(resources.getDrawable(R.mipmap.up))
+                        mine_progress.visibility = View.VISIBLE
+                        isVisiable = true
+                    }
                 }
+
+
 
             }
             R.id.mine_about_us -> {

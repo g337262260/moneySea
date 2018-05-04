@@ -112,6 +112,7 @@ class LoginByPhoneActivity : Activity() ,Handler.Callback{
                 if (second == 0) {
                     mHandler.removeMessages(102)
                     login_phone_checkCode.setText("重新获取")
+                    second = 60
                 }
             }
             103 -> {

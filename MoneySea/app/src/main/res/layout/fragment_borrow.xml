@@ -47,9 +47,9 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="7dp"/>
                 <TextView
+                    android:id="@+id/borrow_interest"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.01%"
                     android:textColor="#fc5959"
                     android:textStyle="bold"
                     android:textSize="24sp"/>

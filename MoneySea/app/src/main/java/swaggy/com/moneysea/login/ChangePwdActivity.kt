@@ -110,6 +110,7 @@ class ChangePwdActivity : Activity(), View.OnClickListener,Handler.Callback {
                 if (second == 0) {
                     mHandler.removeMessages(112)
                     change_pwd_check.setText("重新获取")
+                    second = 60
                 }
             }
             113 -> {

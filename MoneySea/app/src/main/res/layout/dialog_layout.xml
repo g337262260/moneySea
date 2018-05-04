@@ -29,9 +29,9 @@
             android:id="@+id/tvText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="加载中，请稍后..."
+            android:text="上传中，请稍后..."
             android:textSize="16sp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             />
     </LinearLayout>
 </RelativeLayout>

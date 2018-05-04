@@ -20,10 +20,7 @@ import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
 import swaggy.com.moneysea.model.FinishEvent
 import swaggy.com.moneysea.model.UploadEvent
-import swaggy.com.moneysea.utils.MyDialog
-import swaggy.com.moneysea.utils.PhotoUtil
-import swaggy.com.moneysea.utils.StatusBarHeightUtil
-import swaggy.com.moneysea.utils.TypeConverter
+import swaggy.com.moneysea.utils.*
 import java.io.File
 import java.util.*
 
@@ -111,10 +108,12 @@ class AuthActivity : Activity(), View.OnClickListener {
         Log.e("commit",TypeConverter.encodeBase64File(imagePath1.toString()))
         Log.e("commit",TypeConverter.encodeBase64File(imagePath2.toString()))
         Log.e("commit",TypeConverter.encodeBase64File(imagePath3.toString()))
+        var phone = SharedPreUtils.getString(this, "userName", "")
+
         val stringMap = HashMap<String, String>()
-        stringMap.put("mobile","13261561970")
-        stringMap.put("name","郭伟")
-        stringMap.put("idCard","130723199210173034")
+        stringMap.put("mobile",phone)
+        stringMap.put("name",auth_name.text.toString())
+        stringMap.put("idCard",auth_idcard_num.text.toString())
         stringMap.put("fontImg", TypeConverter.encodeBase64File(imagePath1.toString()))
         stringMap.put("backImg",TypeConverter.encodeBase64File(imagePath2.toString()))
         stringMap.put("handImg",TypeConverter.encodeBase64File(imagePath3.toString()))

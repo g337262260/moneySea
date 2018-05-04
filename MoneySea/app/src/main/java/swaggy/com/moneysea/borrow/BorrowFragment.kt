@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,10 @@ import swaggy.com.moneysea.callback.JsonCallback
 import swaggy.com.moneysea.callback.webref.WSResult
 import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
+import swaggy.com.moneysea.info.PerfectInfoActivity
 import swaggy.com.moneysea.login.AuthActivity
+import swaggy.com.moneysea.model.Status
+import swaggy.com.moneysea.utils.SharedPreUtils
 import java.util.*
 
 
@@ -28,7 +32,7 @@ import java.util.*
 class BorrowFragment : Fragment() {
 
 
-    private var isPerfect :Int = 0
+    private var approve :Int = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,22 +48,38 @@ class BorrowFragment : Fragment() {
 
     private fun getstatus() {
         val params = HashMap<String, String>()
-        params.put("mobile", "13261561970")
-        OkGo.post<WSResult<String>>(HttpContants.BORROW_STATUS)
+        var phone = SharedPreUtils.getString(activity, "userName", "")
+        params.put("mobile", phone)
+        OkGo.post<WSResult<Status>>(HttpContants.BORROW_STATUS)
                 .cacheMode(CacheMode.NO_CACHE)
                 .params(params)
-                .execute(object : JsonCallback<WSResult<String>>() {
+                .execute(object : JsonCallback<WSResult<Status>>() {
                     @SuppressLint("SetTextI18n")
-                    override fun onSuccess(response: Response<WSResult<String>>?) {
+                    override fun onSuccess(response: Response<WSResult<Status>>?) {
                         when (response!!.body().code) {
-                            ErrorCode.BORROW_SUCCESS -> {
-                                borrow_button!!.text = "审核中"
-                                borrow_button!!.isClickable = false
+                            ErrorCode.SUCCESS -> {
+                                Log.e("borrowFragmeng","success")
+                               //请求成功
+                                var result = response.body().result
+                                var borrow = result.borrow
+                                Log.e("borrowFragmeng","success"+borrow)
+                                //放款进度
+                                if (borrow==0) {
+                                    borrow_button.isClickable = true
+                                    borrow_button.text = "一键贷款"
+                                }else if(borrow==1){
+                                    borrow_button.isClickable = false
+                                    borrow_button.text = "已申请"
+                                }else if (borrow==2){
+                                    borrow_button.isClickable = false
+                                    borrow_button.text = "审核通过"
+                                }
+                                //认证信息
+                                approve = result.approve
+                                //设置利息
+                                borrow_interest.text = result.interest+"%"
                             }
-                            ErrorCode.BORROW_NO -> {
-                                borrow_button!!.text = "一键借贷"
-                                borrow_button!!.isClickable = true
-                            }
+
 
                         }
 
@@ -71,18 +91,18 @@ class BorrowFragment : Fragment() {
     private fun initView() {
         borrow_button.setOnClickListener {
             //判断状态，如果未完善，则跳转到完善信息页面
-            if (isPerfect==0) {
+            if (approve==0) {
+                startActivity(Intent(activity,PerfectInfoActivity::class.java))
+            }else {
                 commit()
-
-            }else{
-                startActivity(Intent(activity,AuthActivity::class.java))
             }
         }
     }
 
     private fun commit() {
         val params = HashMap<String, String>()
-        params.put("mobile", "13261561970")
+        var phone = SharedPreUtils.getString(activity, "userName", "")
+        params.put("mobile", phone)
         OkGo.post<WSResult<String>>(HttpContants.BORROW)
                 .cacheMode(CacheMode.NO_CACHE)
                 .params(params)
