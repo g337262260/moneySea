@@ -1,21 +1,33 @@
 package swaggy.com.moneysea.login
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import cn.smssdk.EventHandler
 import cn.smssdk.SMSSDK
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.cache.CacheMode
+import com.lzy.okgo.model.Response
 import kotlinx.android.synthetic.main.activity_change_pwd.*
-import kotlinx.android.synthetic.main.activity_login_by_phone.*
 import swaggy.com.moneysea.R
+import swaggy.com.moneysea.callback.JsonCallback
+import swaggy.com.moneysea.callback.webref.WSResult
+import swaggy.com.moneysea.config.ErrorCode
+import swaggy.com.moneysea.config.HttpContants
 import swaggy.com.moneysea.utils.StatusBarHeightUtil
+import java.util.*
 
 class ChangePwdActivity : Activity(), View.OnClickListener,Handler.Callback {
 
 
     private val mHandler = Handler(this)
+    private var eventHandler: EventHandler? = null
+
 
     //接收验证码倒计时60s
     private var second = 60
@@ -24,24 +36,51 @@ class ChangePwdActivity : Activity(), View.OnClickListener,Handler.Callback {
         super.onCreate(savedInstanceState)
         StatusBarHeightUtil.transparencyBar(this)
         setContentView(R.layout.activity_change_pwd)
+        initEvent()
         initView()
     }
 
     private fun initView() {
         change_pwd_back.setOnClickListener(this)
         change_pwd_button.setOnClickListener(this)
-        change_pwd_checkCode.setOnClickListener(this)
+        change_pwd_check.setOnClickListener(this)
     }
+    private fun initEvent() {
+        // 创建EventHandler对象
+        eventHandler = object : EventHandler() {
+            override fun afterEvent(event: Int, result: Int, data: Any?) {
+                if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                    //发送成功
+                    mHandler.sendEmptyMessage(111)
+                } else if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                    //验证成功
+                    mHandler.sendEmptyMessage(113)
+                } else if (event == SMSSDK.RESULT_ERROR) {
+                    //短信发送失败
+                    mHandler.sendEmptyMessage(114)
+                } else {
+                    //短信验证失败
+                    mHandler.sendEmptyMessage(115)
+                }
+
+            }
+        }
+
+        // 注册监听器
+        SMSSDK.registerEventHandler(eventHandler)
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.change_pwd_back -> {
                 finish()
             }
-            R.id.change_pwd_checkCode -> {
+            R.id.change_pwd_check -> {
+                Log.e("phone","sssss"+v?.id)
                 var phone = change_pwd_phone.text.toString()
                 if (phone.length in 1..11) {
                     SMSSDK.getVerificationCode("86", phone)
-                    mHandler.sendEmptyMessage(102)
+                    mHandler.sendEmptyMessage(112)
                 } else {
                     Toast.makeText(this, "请输入正确的手机号", Toast.LENGTH_SHORT).show()
 
@@ -62,26 +101,24 @@ class ChangePwdActivity : Activity(), View.OnClickListener,Handler.Callback {
 
     override fun handleMessage(msg: Message?): Boolean {
         when (msg?.what) {
-            101 -> Toast.makeText(this, "发送成功", Toast.LENGTH_SHORT).show()
-            102 -> {
+            111 -> Toast.makeText(this, "发送成功", Toast.LENGTH_SHORT).show()
+            112 -> {
                 //获取验证码后开始倒计时
-                login_phone_checkCode.setText("剩余" + second.toString() + "s")
+                change_pwd_check.setText("剩余" + second.toString() + "s")
                 second -= 1
-                mHandler.sendEmptyMessageDelayed(102, 1000)
+                mHandler.sendEmptyMessageDelayed(112, 1000)
                 if (second == 0) {
-                    mHandler.removeMessages(102)
-                    login_phone_checkCode.setText("重新获取")
+                    mHandler.removeMessages(112)
+                    change_pwd_check.setText("重新获取")
                 }
             }
-            103 -> {
+            113 -> {
                 Toast.makeText(this, "验证成功", Toast.LENGTH_SHORT).show()
-                var new_pwd = change_pwd_new.text.toString()
-                var again_pwd = change_pwd_again.text.toString()
                 savePwd()
 
             }
-            104 -> Toast.makeText(this, "短信发送失败", Toast.LENGTH_SHORT).show()
-            105 -> Toast.makeText(this, "短信验证失败", Toast.LENGTH_SHORT).show()
+            114 -> Toast.makeText(this, "短信发送失败", Toast.LENGTH_SHORT).show()
+            115 -> Toast.makeText(this, "短信验证失败", Toast.LENGTH_SHORT).show()
         }
         return false
     }
@@ -90,7 +127,32 @@ class ChangePwdActivity : Activity(), View.OnClickListener,Handler.Callback {
      * 调用接口,保存密码
      */
     private fun savePwd() {
+        val phone = change_pwd_new!!.text.toString()
+        val pwd = change_pwd_again!!.text.toString()
+        if (!phone.equals(pwd)) {
+            Toast.makeText(this,"两次密码输入不一致",Toast.LENGTH_SHORT).show()
+            return
+        }
+        val stringMap = HashMap<String, String>()
+        stringMap.put("mobile",change_pwd_phone.text.toString())
+        stringMap.put("password",pwd)
+        OkGo.post<WSResult<String>>(HttpContants.CHANGE_PWD)
+                .cacheMode(CacheMode.NO_CACHE)
+                .params(stringMap)
+                .execute(object : JsonCallback<WSResult<String>>() {
+                    @SuppressLint("SetTextI18n")
+                    override fun onSuccess(response: Response<WSResult<String>>?) {
+                        when (response!!.body().code) {
+                            ErrorCode.SUCCESS -> {
+                                mHandler.removeCallbacksAndMessages(null);
+                                finish()
+                            }
 
+                        }
+
+                    }
+
+                })
     }
 
     override fun onDestroy() {

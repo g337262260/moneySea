@@ -10,20 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:background="@mipmap/mine_bg">
-
         <com.facebook.drawee.view.DraweeView
             android:id="@+id/mine_icon"
             android:layout_width="67dp"
             android:layout_height="67dp"
             android:layout_marginTop="62dp"
-            android:src="@mipmap/info"
+            android:src="@mipmap/icon"
             android:layout_gravity="center_horizontal"/>
         <TextView
             android:id="@+id/mine_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="123456789"
             android:textColor="#ffffff"
             android:textSize="15sp"
             android:layout_marginTop="142dp"/>
@@ -117,6 +115,7 @@
             android:textColor="#393838"
             android:layout_marginLeft="93dp"
             android:textStyle="bold"
+            android:gravity="center"
             android:drawableTop="@mipmap/verify"/>
         <View
             android:layout_width="0dp"
@@ -126,14 +125,15 @@
             android:layout_height="2dp"
             android:background="#22ac38"/>
         <TextView
+            android:id="@+id/mine_shenhe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="正在审核"
             android:textSize="9sp"
             android:drawablePadding="7dp"
             android:textColor="#393838"
             android:layout_marginRight="93dp"
             android:textStyle="bold"
+            android:gravity="center"
             android:drawableTop="@mipmap/pass"/>
     </LinearLayout>
     <TextView
@@ -141,6 +141,18 @@
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:text="关于我们"
+        android:background="#ffffff"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:paddingLeft="28dp"
+        android:textSize="13sp"
+        android:layout_marginTop="8dp"
+        android:textColor="#393838"/>
+    <TextView
+        android:id="@+id/mine_logout"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="退出登录"
         android:background="#ffffff"
         android:textStyle="bold"
         android:gravity="center_vertical"

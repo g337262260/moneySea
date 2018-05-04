@@ -5,11 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import cn.smssdk.EventHandler
 import cn.smssdk.SMSSDK
 import kotlinx.android.synthetic.main.activity_login_by_phone.*
 import swaggy.com.moneysea.R
+import swaggy.com.moneysea.utils.SharedPreUtils
 import swaggy.com.moneysea.utils.StatusBarHeightUtil
 
 class LoginByPhoneActivity : Activity() ,Handler.Callback{
@@ -53,8 +56,26 @@ class LoginByPhoneActivity : Activity() ,Handler.Callback{
             }
         }
         phone_login_back.setOnClickListener { finish() }
-    }
+        login_phone_code.addTextChangedListener(textWatcher)
 
+
+    }
+    private val textWatcher = object : TextWatcher {
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            if (s.length ==4 ) {
+                login_phone_button.setBackground(resources.getDrawable(R.mipmap.button_success))
+            }
+        }
+
+        override fun afterTextChanged(s: Editable) {
+
+        }
+    }
     private fun initEvent() {
         // 创建EventHandler对象
         eventHandler = object : EventHandler() {
@@ -96,6 +117,7 @@ class LoginByPhoneActivity : Activity() ,Handler.Callback{
             103 -> {
                 Toast.makeText(this, "验证成功", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this,SettingPwdActivity::class.java))
+                SharedPreUtils.putString(this,"userName",login_phone_edit_num.text.toString())
             }
             104 -> Toast.makeText(this, "短信发送失败", Toast.LENGTH_SHORT).show()
             105 -> Toast.makeText(this, "短信验证失败", Toast.LENGTH_SHORT).show()

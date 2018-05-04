@@ -45,6 +45,7 @@
                 android:layout_marginRight="20dp"
                 android:padding="8dp"
                 android:text="跳过"
+                android:visibility="gone"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
         </RelativeLayout>
@@ -146,6 +147,7 @@
                     android:background="@color/main_bg">
 
                     <com.facebook.drawee.view.DraweeView
+                        android:id="@+id/auth_idcard1_image"
                         android:layout_width="152dp"
                         android:layout_height="88dp"
                         android:layout_alignParentLeft="true" />
@@ -192,6 +194,7 @@
                     android:background="@color/main_bg">
 
                     <com.facebook.drawee.view.DraweeView
+                        android:id="@+id/auth_idcard2_image"
                         android:layout_width="152dp"
                         android:layout_height="88dp"
                         android:layout_alignParentLeft="true" />
@@ -238,6 +241,7 @@
                     android:background="@color/main_bg">
 
                     <com.facebook.drawee.view.DraweeView
+                        android:id="@+id/auth_idcard3_image3"
                         android:layout_width="152dp"
                         android:layout_height="88dp"
                         android:layout_alignParentLeft="true" />
@@ -260,7 +264,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/login_button"
+                android:id="@+id/auth_commit"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:layout_gravity="center_horizontal"

@@ -29,10 +29,13 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.lzy.net:okgo:3.0.4'
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'com.readystatesoftware.chuck:library:1.0.4'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     compile 'com.facebook.fresco:fresco:1.1.0'
     compile 'com.facebook.fresco:imagepipeline-okhttp3:1.1.0'
     compile 'com.github.Awent:PhotoPick-Master:v1.095'
+    implementation files('libs/javabase64-1.3.1.jar')
 }
 repositories {
     mavenCentral()
@@ -44,8 +47,8 @@ apply plugin: 'com.mob.sdk'
 
 // 在MobSDK的扩展中注册SMSSDK的相关信息
 MobSDK {
-    appKey "d580ad56b4b5"
-    appSecret "7fcae59a62342e7e2759e9e397c82bdd"
+    appKey "25989a3d63917"
+    appSecret "56d44f0dc6acb6a2a56f13754adb224c"
 
     SMSSDK {}
 }
