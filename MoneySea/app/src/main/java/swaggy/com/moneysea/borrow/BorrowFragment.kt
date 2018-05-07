@@ -19,7 +19,6 @@ import swaggy.com.moneysea.callback.JsonCallback
 import swaggy.com.moneysea.callback.webref.WSResult
 import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
-import swaggy.com.moneysea.info.PerfectInfoActivity
 import swaggy.com.moneysea.login.AuthActivity
 import swaggy.com.moneysea.model.Status
 import swaggy.com.moneysea.utils.SharedPreUtils
@@ -92,7 +91,7 @@ class BorrowFragment : Fragment() {
         borrow_button.setOnClickListener {
             //判断状态，如果未完善，则跳转到完善信息页面
             if (approve==0) {
-                startActivity(Intent(activity,PerfectInfoActivity::class.java))
+                startActivity(Intent(activity,AuthActivity::class.java))
             }else {
                 commit()
             }

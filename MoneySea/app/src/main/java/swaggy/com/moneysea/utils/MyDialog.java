@@ -2,6 +2,7 @@ package swaggy.com.moneysea.utils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -43,7 +44,14 @@ public class MyDialog extends Dialog {
         if(hasFocus && dialog != null){
             ivProgress = (ImageView) dialog.findViewById(R.id.ivProgress);
             Animation animation = AnimationUtils.loadAnimation(context, R.anim.dialog_progress_anim);
-//            ivProgress.startAnimation(animation);
+            ivProgress.startAnimation(animation);
         }
+    }
+
+
+    @Override
+    public void setOnDismissListener(@Nullable OnDismissListener listener) {
+        super.setOnDismissListener(listener);
+        ivProgress.clearAnimation();
     }
 }

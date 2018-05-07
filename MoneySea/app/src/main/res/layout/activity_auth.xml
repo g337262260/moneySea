@@ -274,7 +274,7 @@
                 android:layout_marginTop="29dp"
                 android:background="@mipmap/button_success"
                 android:gravity="center"
-                android:text="提交"
+                android:text="下一步"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>

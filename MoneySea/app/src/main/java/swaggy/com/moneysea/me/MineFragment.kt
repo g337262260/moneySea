@@ -22,7 +22,7 @@ import swaggy.com.moneysea.callback.JsonCallback
 import swaggy.com.moneysea.callback.webref.WSResult
 import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
-import swaggy.com.moneysea.info.PerfectInfoActivity
+import swaggy.com.moneysea.login.AuthActivity
 import swaggy.com.moneysea.login.ChangePwdActivity
 import swaggy.com.moneysea.model.LogoutEvent
 import swaggy.com.moneysea.model.UserInfo
@@ -132,7 +132,7 @@ class MineFragment : Fragment(), View.OnClickListener {
                 if (complete==1) {
                     Toast.makeText(activity,"信息已完善", Toast.LENGTH_SHORT).show()
                 }else{
-                    startActivity(Intent(activity, PerfectInfoActivity::class.java))
+                    startActivity(Intent(activity, AuthActivity::class.java))
 
                 }
             }

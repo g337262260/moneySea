@@ -18,7 +18,6 @@ import swaggy.com.moneysea.callback.JsonCallback
 import swaggy.com.moneysea.callback.webref.WSResult
 import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
-import swaggy.com.moneysea.model.AboutUs
 import swaggy.com.moneysea.utils.SharedPreUtils
 import swaggy.com.moneysea.utils.StatusBarHeightUtil
 import java.util.*
@@ -85,12 +84,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val stringMap = HashMap<String, String>()
         stringMap.put("mobile",phone)
         stringMap.put("password",pwd)
-        OkGo.post<WSResult<AboutUs>>(HttpContants.LOGIN)
+        OkGo.post<WSResult<String>>(HttpContants.LOGIN)
                 .cacheMode(CacheMode.NO_CACHE)
                 .params(stringMap)
-                .execute(object : JsonCallback<WSResult<AboutUs>>() {
+                .execute(object : JsonCallback<WSResult<String>>() {
                     @SuppressLint("SetTextI18n")
-                    override fun onSuccess(response: Response<WSResult<AboutUs>>?) {
+                    override fun onSuccess(response: Response<WSResult<String>>?) {
                         when (response!!.body().code) {
                             ErrorCode.SUCCESS -> {
                                 success()

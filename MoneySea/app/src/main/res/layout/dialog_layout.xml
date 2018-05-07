@@ -21,7 +21,7 @@
                 android:id="@+id/ivProgress"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@mipmap/logo"
+                android:background="@mipmap/loading"
                 android:layout_centerInParent="true"
                 />
         </RelativeLayout>

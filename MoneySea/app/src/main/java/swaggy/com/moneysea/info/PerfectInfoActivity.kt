@@ -15,26 +15,36 @@ import com.lzy.okgo.model.Response
 import kotlinx.android.synthetic.main.activity_perfect_info.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import swaggy.com.moneysea.MainActivity
 import swaggy.com.moneysea.R
 import swaggy.com.moneysea.callback.JsonCallback
 import swaggy.com.moneysea.callback.webref.WSResult
 import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
-import swaggy.com.moneysea.login.AuthActivity
 import swaggy.com.moneysea.model.FinishEvent
 import swaggy.com.moneysea.utils.SharedPreUtils
 import swaggy.com.moneysea.utils.StatusBarHeightUtil
-import java.util.*
 
 
 class PerfectInfoActivity : Activity() {
+
+
+    private var params: HashMap<String, String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         StatusBarHeightUtil.transparencyBar(this)
         setContentView(R.layout.activity_perfect_info)
         EventBus.getDefault().register(this)
+        ininData()
         initView()
+    }
+
+    private fun ininData() {
+        var intent = intent
+        params = intent.getSerializableExtra("params") as HashMap<String, String>
+        Log.e("params",params.toString())
+
     }
 
     private fun initView() {
@@ -57,14 +67,7 @@ class PerfectInfoActivity : Activity() {
     }
 
     private fun commit() {
-        val company = info_work_place!!.text.toString()
-        val titles = info_work_job!!.text.toString()
-        val address = info_work_address!!.text.toString()
-        val phone = info_work_tel!!.text.toString()
-        val name1 = info_contant_name!!.text.toString()
-        val phone1 = info_contant_tel!!.text.toString()
-        val name2 = info_contant_name2!!.text.toString()
-        val phone2 = info_contant_tel2!!.text.toString()
+
         val name_real = info_bank_user!!.text.toString()
         val idCard = info_bank_id!!.text.toString()
         val bankName = info_bank_name!!.text.toString()
@@ -75,49 +78,67 @@ class PerfectInfoActivity : Activity() {
         val taobao = info_other_taobao!!.text.toString()
         val jd = info_other_jingdong!!.text.toString()
 
-        val stringMap = HashMap<String, String>()
-        stringMap.put("company", company)
-        stringMap.put("titles", titles)
-        stringMap.put("address", address)
-        stringMap.put("phone", phone)
-        stringMap.put("name1", name1)
-        stringMap.put("phone1", phone1)
-        stringMap.put("name2", name2)
-        stringMap.put("phone2", phone2)
-        stringMap.put("name_real", name_real)
-        stringMap.put("idCard", idCard)
-        stringMap.put("bankName", bankName)
-        stringMap.put("bankNumber", bankNumber)
-        stringMap.put("alipay", alipay)
-        stringMap.put("wechat", wechat)
-        stringMap.put("QQ", QQ)
-        stringMap.put("taobao", taobao)
-        stringMap.put("jd", jd)
 
+        if (name_real.isEmpty()) {
+            Toast.makeText(this,"请填写姓名",Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (idCard.isEmpty()) {
+            Toast.makeText(this,"请填写姓名",Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (idCard.length!=18) {
+            Toast.makeText(this,"请填写正确的身份证号",Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (bankNumber.isEmpty()) {
+            Toast.makeText(this,"请填写银行卡号",Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (bankNumber.length!=19) {
+            Toast.makeText(this,"请填写正确的银行卡号",Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (alipay.isEmpty()) {
+            Toast.makeText(this,"请填写支付宝账号",Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        params!!.put("name_real", name_real)
+        params!!.put("idCard", idCard)
+        params!!.put("bankName", bankName)
+        params!!.put("bankNumber", bankNumber)
+        params!!.put("alipay", alipay)
+        params!!.put("wechat", wechat)
+        params!!.put("QQ", QQ)
+        params!!.put("taobao", taobao)
+        params!!.put("jd", jd)
+
+        Log.e("params", params.toString())
         val gson = Gson()
-        var data = gson.toJson(stringMap).toString()
+        var data = gson.toJson(params).toString()
         Log.e("data", data)
 
         var mobile = SharedPreUtils.getString(this, "userName", "")
 
-        val params = HashMap<String, String>()
-        params.put("mobile", mobile)
-        params.put("data", data)
+        val params1 = HashMap<String, String>()
+        params1.put("mobile", mobile)
+        params1.put("data", data)
         OkGo.post<WSResult<String>>(HttpContants.COMPLETE)
                 .cacheMode(CacheMode.NO_CACHE)
-                .params(params)
+                .params(params1)
                 .execute(object : JsonCallback<WSResult<String>>() {
                     @SuppressLint("SetTextI18n")
                     override fun onSuccess(response: Response<WSResult<String>>?) {
                         var message = response!!.body().msg
                         when (response!!.body().code) {
                             ErrorCode.SUCCESS -> {
-                                //注册成功,跳转到验证
-                                startActivity(Intent(this@PerfectInfoActivity, AuthActivity::class.java))
+                                //完善成功,跳转到首页
+                                startActivity(Intent(this@PerfectInfoActivity, MainActivity::class.java))
                                 finish()
                             }
                         }
-                        Toast.makeText(this@PerfectInfoActivity,message,Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@PerfectInfoActivity, message, Toast.LENGTH_SHORT).show()
 
                     }
 

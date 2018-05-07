@@ -18,7 +18,7 @@ import swaggy.com.moneysea.callback.JsonCallback
 import swaggy.com.moneysea.callback.webref.WSResult
 import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
-import swaggy.com.moneysea.model.FinishEvent
+import swaggy.com.moneysea.info.PerfectInfo1Activity
 import swaggy.com.moneysea.model.UploadEvent
 import swaggy.com.moneysea.utils.*
 import java.io.File
@@ -53,7 +53,7 @@ class AuthActivity : Activity(), View.OnClickListener {
         auth_idcard1_image.setOnClickListener(this)
         auth_idcard2_image.setOnClickListener(this)
         auth_idcard3_image3.setOnClickListener(this)
-        dialog = MyDialog.showDialog(this);
+        dialog = MyDialog.showDialog(this)
     }
 
     override fun onClick(v: View?) {
@@ -124,11 +124,11 @@ class AuthActivity : Activity(), View.OnClickListener {
                     override fun onSuccess(response: Response<WSResult<String>>) {
                         Log.e("commit","success")
                         if (response.body().code==ErrorCode.SUCCESS) {
-                            dialog?.cancel()
-                            startActivity(Intent(this@AuthActivity, MainActivity::class.java))
-                            EventBus.getDefault().post(FinishEvent(1))
-                            finish()
+                            startActivity(Intent(this@AuthActivity, PerfectInfo1Activity::class.java))
+                        }else{
+                            Toast.makeText(this@AuthActivity,response.body().msg,Toast.LENGTH_SHORT).show()
                         }
+                        dialog!!.dismiss()
                     }
 
                     override fun onError(response: Response<WSResult<String>>) {
