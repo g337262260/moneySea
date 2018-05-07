@@ -105,6 +105,10 @@ class AuthActivity : Activity(), View.OnClickListener {
             Toast.makeText(this,"身份证号不能为空",Toast.LENGTH_SHORT)
             return
         }
+        if (!(auth_idcard_num.text!=null&&auth_idcard_num.text.length!=18)) {
+            Toast.makeText(this,"身份证号格式不正确",Toast.LENGTH_SHORT)
+            return
+        }
         Log.e("commit",TypeConverter.encodeBase64File(imagePath1.toString()))
         Log.e("commit",TypeConverter.encodeBase64File(imagePath2.toString()))
         Log.e("commit",TypeConverter.encodeBase64File(imagePath3.toString()))
@@ -118,6 +122,7 @@ class AuthActivity : Activity(), View.OnClickListener {
         stringMap.put("backImg",TypeConverter.encodeBase64File(imagePath2.toString()))
         stringMap.put("handImg",TypeConverter.encodeBase64File(imagePath3.toString()))
 
+        auth_commit.isClickable = false
         OkGo.post<WSResult<String>>(HttpContants.PERFECT)
                 .params(stringMap)
                 .execute(object : JsonCallback<WSResult<String>>() {
@@ -132,7 +137,8 @@ class AuthActivity : Activity(), View.OnClickListener {
                     }
 
                     override fun onError(response: Response<WSResult<String>>) {
-
+                        dialog!!.dismiss()
+                        auth_commit.isClickable = true
                     }
 
                 })

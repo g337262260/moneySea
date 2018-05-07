@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MoneySea.iml" filepath="$PROJECT_DIR$/MoneySea.iml" />
-      <module fileurl="file://E:\code\moneySea\MoneySea\MoneySea.iml" filepath="E:\code\moneySea\MoneySea\MoneySea.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\code\moneySea\MoneySea\app\app.iml" filepath="E:\code\moneySea\MoneySea\app\app.iml" />
     </modules>
   </component>
 </project>

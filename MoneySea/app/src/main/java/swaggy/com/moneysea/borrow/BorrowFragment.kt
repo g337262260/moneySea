@@ -2,6 +2,8 @@ package swaggy.com.moneysea.borrow
 
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -14,12 +16,14 @@ import com.lzy.okgo.OkGo
 import com.lzy.okgo.cache.CacheMode
 import com.lzy.okgo.model.Response
 import kotlinx.android.synthetic.main.fragment_borrow.*
+import org.greenrobot.eventbus.EventBus
 import swaggy.com.moneysea.R
 import swaggy.com.moneysea.callback.JsonCallback
 import swaggy.com.moneysea.callback.webref.WSResult
 import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
 import swaggy.com.moneysea.login.AuthActivity
+import swaggy.com.moneysea.model.LogoutEvent
 import swaggy.com.moneysea.model.Status
 import swaggy.com.moneysea.utils.SharedPreUtils
 import java.util.*
@@ -32,6 +36,8 @@ class BorrowFragment : Fragment() {
 
 
     private var approve :Int = 0
+
+    private var borrow :Int = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -60,23 +66,23 @@ class BorrowFragment : Fragment() {
                                 Log.e("borrowFragmeng","success")
                                //请求成功
                                 var result = response.body().result
-                                var borrow = result.borrow
+                                borrow = result.borrow
                                 Log.e("borrowFragmeng","success"+borrow)
                                 //放款进度
                                 if (borrow==0) {
-                                    borrow_button.isClickable = true
-                                    borrow_button.text = "一键贷款"
+                                    borrow_button?.isClickable = true
+                                    borrow_button?.text = "一键贷款"
                                 }else if(borrow==1){
-                                    borrow_button.isClickable = false
-                                    borrow_button.text = "已申请"
+                                    borrow_button?.isClickable = false
+                                    borrow_button?.text = "已申请"
                                 }else if (borrow==2){
-                                    borrow_button.isClickable = false
-                                    borrow_button.text = "审核通过"
+                                    borrow_button?.isClickable = false
+                                    borrow_button?.text = "审核通过"
                                 }
                                 //认证信息
                                 approve = result.approve
                                 //设置利息
-                                borrow_interest.text = result.interest+"%"
+                                borrow_interest?.text = result.interest+"%"
                             }
 
 
@@ -89,12 +95,28 @@ class BorrowFragment : Fragment() {
 
     private fun initView() {
         borrow_button.setOnClickListener {
-            //判断状态，如果未完善，则跳转到完善信息页面
-            if (approve==0) {
-                startActivity(Intent(activity,AuthActivity::class.java))
-            }else {
-                commit()
+            if (borrow==2) {
+                //TODO:跳转到申请页面
+                
+            }else{
+                //判断状态，如果未完善，则跳转到完善信息页面
+                if (approve==0) {
+                    val builder = AlertDialog.Builder(activity)
+                    builder.setTitle("是否前往实名认证")
+                            .setPositiveButton("确定", DialogInterface.OnClickListener { dialog, id ->
+                                startActivity(Intent(activity,AuthActivity::class.java))
+                                dialog.dismiss()
+                            })
+                            .setNegativeButton("取消", DialogInterface.OnClickListener { dialog, id ->
+                                dialog.cancel()
+                            })
+                    builder.create()
+                    builder.show()
+                }else {
+                    commit()
+                }
             }
+
         }
     }
 
@@ -112,8 +134,8 @@ class BorrowFragment : Fragment() {
                             ErrorCode.SUCCESS -> {
                                 //注册成功,跳转到验证
                                 Toast.makeText(activity, "提交成功", Toast.LENGTH_SHORT).show()
-                                borrow_button.text = "审核中"
-                                borrow_button.isClickable = false
+                                borrow_button?.text = "审核中"
+                                borrow_button?.isClickable = false
                             }
 
                         }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:background="@color/main_bg"
     android:orientation="vertical"
     tools:context="swaggy.com.moneysea.login.AuthActivity">
@@ -148,24 +149,28 @@
 
                     <com.facebook.drawee.view.DraweeView
                         android:id="@+id/auth_idcard1_image"
-                        android:layout_width="152dp"
+                        android:layout_width="match_parent"
                         android:layout_height="88dp"
+                        android:background="#cfcdcf"
+                        fresco:roundedCornerRadius="5dp"
                         android:layout_alignParentLeft="true" />
-
                     <ImageView
                         android:layout_width="19dp"
                         android:layout_height="15dp"
                         android:layout_gravity="bottom|right"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginRight="7dp"
+                        android:layout_marginRight="15dp"
                         android:src="@mipmap/camera" />
                 </FrameLayout>
-
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"/>
                 <com.facebook.drawee.view.DraweeView
                     android:layout_width="0dp"
                     android:layout_height="88dp"
                     android:layout_alignParentRight="true"
                     android:layout_weight="1"
+                    android:scaleType="fitXY"
                     android:src="@mipmap/id_card1" />
             </LinearLayout>
 
@@ -195,8 +200,10 @@
 
                     <com.facebook.drawee.view.DraweeView
                         android:id="@+id/auth_idcard2_image"
-                        android:layout_width="152dp"
+                        android:layout_width="match_parent"
                         android:layout_height="88dp"
+                        fresco:roundedCornerRadius="5dp"
+                        android:background="#cfcdcf"
                         android:layout_alignParentLeft="true" />
 
                     <ImageView
@@ -204,14 +211,17 @@
                         android:layout_height="15dp"
                         android:layout_gravity="bottom|right"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginRight="7dp"
+                        android:layout_marginRight="15dp"
                         android:src="@mipmap/camera" />
                 </FrameLayout>
-
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"/>
                 <com.facebook.drawee.view.DraweeView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="88dp"
+                    android:scaleType="fitXY"
                     android:layout_alignParentRight="true"
                     android:src="@mipmap/id_card2" />
             </LinearLayout>
@@ -239,11 +249,12 @@
                     android:layout_weight="1"
                     android:layout_height="88dp"
                     android:background="@color/main_bg">
-
                     <com.facebook.drawee.view.DraweeView
                         android:id="@+id/auth_idcard3_image3"
-                        android:layout_width="152dp"
+                        android:layout_width="match_parent"
                         android:layout_height="88dp"
+                        fresco:roundedCornerRadius="5dp"
+                        android:background="#cfcdcf"
                         android:layout_alignParentLeft="true" />
 
                     <ImageView
@@ -251,14 +262,17 @@
                         android:layout_height="15dp"
                         android:layout_gravity="bottom|right"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginRight="7dp"
+                        android:layout_marginRight="15dp"
                         android:src="@mipmap/camera" />
                 </FrameLayout>
-
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"/>
                 <com.facebook.drawee.view.DraweeView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="88dp"
+                    android:scaleType="fitXY"
                     android:layout_alignParentRight="true"
                     android:src="@mipmap/id_card3" />
             </LinearLayout>

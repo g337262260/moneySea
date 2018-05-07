@@ -54,8 +54,12 @@ class MineFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initData()
         initView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        initData()
     }
 
     private fun initData() {
@@ -72,7 +76,7 @@ class MineFragment : Fragment(), View.OnClickListener {
                         when (response!!.body().code) {
                             ErrorCode.SUCCESS ->{
                                 var result = response.body().result
-                                mine_account!!.text = result.mobile
+                                mine_account?.text = result.mobile
                                 status = result.status
                                 if (result.status==2) {
                                     //审核通过
@@ -82,10 +86,13 @@ class MineFragment : Fragment(), View.OnClickListener {
                                     mine_shenhe.text  = "已通过"
                                 }else {
                                     //审核未通过
-                                    val drawable = resources.getDrawable(R.mipmap.pass_no)
-                                    drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
-                                    mine_shenhe.setCompoundDrawables(null, drawable, null, null)
-                                    mine_shenhe.text  = "未通过"
+                                    if(isAdded()){
+                                        val drawable = resources.getDrawable(R.mipmap.pass_no)
+                                        drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
+                                        mine_shenhe.setCompoundDrawables(null, drawable, null, null)
+                                        mine_shenhe.text  = "未通过"
+                                    }
+
                                 }
 
                                 complete = result.complete
