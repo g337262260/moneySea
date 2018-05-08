@@ -27,5 +27,9 @@ class HttpContants {
         val USER_INFO :String = HOST +"userInfo"
 
         val COMPLETE :String = HOST +"complete"
+
+        val LOAN :String  = HOST +"loan"
+
+        val LOANING :String  = HOST +"loaning"
     }
 }

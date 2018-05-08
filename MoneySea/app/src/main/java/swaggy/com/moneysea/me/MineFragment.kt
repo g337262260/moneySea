@@ -16,10 +16,12 @@ import com.lzy.okgo.cache.CacheMode
 import com.lzy.okgo.model.Response
 import kotlinx.android.synthetic.main.fragment_mine.*
 import org.greenrobot.eventbus.EventBus
+import swaggy.com.moneysea.CreditActivity
 import swaggy.com.moneysea.R
 import swaggy.com.moneysea.about.AboutUsActivity
 import swaggy.com.moneysea.callback.JsonCallback
 import swaggy.com.moneysea.callback.webref.WSResult
+import swaggy.com.moneysea.config.BorrowStatus
 import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
 import swaggy.com.moneysea.login.AuthActivity
@@ -111,6 +113,7 @@ class MineFragment : Fragment(), View.OnClickListener {
         mine_perfect_info.setOnClickListener(this)
         mine_borrow_progress.setOnClickListener(this)
         mine_about_us.setOnClickListener(this)
+        mine_can_use.setOnClickListener(this)
         mine_logout.setOnClickListener {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("是否退出登录")
@@ -163,6 +166,14 @@ class MineFragment : Fragment(), View.OnClickListener {
             }
             R.id.mine_about_us -> {
                 startActivity(Intent(activity, AboutUsActivity::class.java))
+            }
+            R.id.mine_can_use -> {
+                if (status>BorrowStatus.VERIFY){
+                    startActivity(Intent(activity,CreditActivity::class.java))
+                }else{
+                    Toast.makeText(activity,"审核未通过",Toast.LENGTH_SHORT).show()
+                }
+
             }
 
         }

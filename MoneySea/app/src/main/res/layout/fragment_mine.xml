@@ -137,6 +137,18 @@
             android:drawableTop="@mipmap/pass"/>
     </LinearLayout>
     <TextView
+        android:id="@+id/mine_can_use"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:text="可用额度"
+        android:background="#ffffff"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:paddingLeft="28dp"
+        android:textSize="13sp"
+        android:layout_marginTop="8dp"
+        android:textColor="#393838"/>
+    <TextView
         android:id="@+id/mine_about_us"
         android:layout_width="match_parent"
         android:layout_height="42dp"

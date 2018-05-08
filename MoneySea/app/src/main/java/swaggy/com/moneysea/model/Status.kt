@@ -9,6 +9,7 @@ package swaggy.com.moneysea.model
 data class Status(
 		val borrow : Int	,
 		val interest: String,
-		val approve: Int
+		val approve: Int,
+		val lines:Int
 
 )

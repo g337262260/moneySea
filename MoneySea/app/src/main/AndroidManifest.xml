@@ -36,8 +36,8 @@
         <activity
             android:name=".info.PerfectInfo1Activity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            >
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".CreditActivity">
 
         </activity>
     </application>
