@@ -72,6 +72,8 @@ class BorrowFragment : Fragment() {
                                 if (borrow == BorrowStatus.CAN_BORROW) {
                                     borrow_button?.isClickable = true
                                     borrow_button?.text = "一键贷款"
+                                    borrow_interest_container?.visibility = View.VISIBLE
+                                    borrow_interest?.text = "${result.interest}%"
                                 } else if (borrow == BorrowStatus.VERIFY) {
                                     borrow_button?.isClickable = false
                                     borrow_button?.text = "审核中"
@@ -102,7 +104,11 @@ class BorrowFragment : Fragment() {
                                     borrow_edu?.visibility = View.VISIBLE
                                     borrow_interest_container?.visibility = View.GONE
                                     borrow_edu?.text = result.lines.toString()
-                                } else if (borrow == BorrowStatus.LOAN_END) {
+                                } else if (borrow == BorrowStatus.TRADE_FINISH) {
+                                    borrow_hint?.text  = "贷款金额（元）"
+                                    borrow_edu?.visibility = View.VISIBLE
+                                    borrow_interest_container?.visibility = View.GONE
+                                    borrow_edu?.text = result.lines.toString()
                                     borrow_button?.isClickable = false
                                     borrow_button?.text = "贷款已还清"
                                 }

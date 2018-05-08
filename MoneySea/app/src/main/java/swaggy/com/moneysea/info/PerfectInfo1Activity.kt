@@ -8,7 +8,10 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_perfect_info1.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import swaggy.com.moneysea.R
+import swaggy.com.moneysea.model.FinishEvent
 import swaggy.com.moneysea.utils.MobileUtil
 import swaggy.com.moneysea.utils.StatusBarHeightUtil
 import java.util.*
@@ -20,6 +23,7 @@ class PerfectInfo1Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         StatusBarHeightUtil.transparencyBar(this)
         setContentView(R.layout.activity_perfect_info1)
+        EventBus.getDefault().register(this)
         initView()
     }
 
@@ -127,5 +131,16 @@ class PerfectInfo1Activity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    @Subscribe
+    fun onMessageEvent(event: FinishEvent) {
+        if (event.event == 2) {
+            finish()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
 
 }

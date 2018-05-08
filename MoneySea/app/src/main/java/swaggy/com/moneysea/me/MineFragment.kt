@@ -80,12 +80,15 @@ class MineFragment : Fragment(), View.OnClickListener {
                                 var result = response.body().result
                                 mine_account?.text = result.mobile
                                 status = result.status
-                                if (result.status==2) {
+                                if (result.status>=2) {
                                     //审核通过
-                                    val drawable = resources.getDrawable(R.mipmap.pass)
-                                    drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
-                                    mine_shenhe.setCompoundDrawables(null, drawable, null, null)
-                                    mine_shenhe.text  = "已通过"
+                                    if (isAdded()) {
+                                        val drawable = resources.getDrawable(R.mipmap.pass)
+                                        drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
+                                        mine_shenhe.setCompoundDrawables(null, drawable, null, null)
+                                        mine_shenhe.text  = "已通过"
+                                    }
+
                                 }else {
                                     //审核未通过
                                     if(isAdded()){

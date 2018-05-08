@@ -19,6 +19,7 @@ import swaggy.com.moneysea.callback.webref.WSResult
 import swaggy.com.moneysea.config.ErrorCode
 import swaggy.com.moneysea.config.HttpContants
 import swaggy.com.moneysea.info.PerfectInfo1Activity
+import swaggy.com.moneysea.model.FinishEvent
 import swaggy.com.moneysea.model.UploadEvent
 import swaggy.com.moneysea.utils.*
 import java.io.File
@@ -84,29 +85,28 @@ class AuthActivity : Activity(), View.OnClickListener {
 
     private fun commit() {
         Log.e("commit","开始提交")
-        dialog?.show()
         if (imagePath1==null) {
-            Toast.makeText(this,"请上传身份证正面照",Toast.LENGTH_SHORT)
+            Toast.makeText(this,"请上传身份证正面照",Toast.LENGTH_SHORT).show()
             return
         }
         if (imagePath2==null) {
-            Toast.makeText(this,"请上传身份证正面照",Toast.LENGTH_SHORT)
+            Toast.makeText(this,"请上传身份证正面照",Toast.LENGTH_SHORT).show()
             return
         }
         if (imagePath3==null) {
-            Toast.makeText(this,"请上传身份证正面照",Toast.LENGTH_SHORT)
+            Toast.makeText(this,"请上传身份证正面照",Toast.LENGTH_SHORT).show()
             return
         }
         if (!(auth_name.text!=null&&auth_name.text.length>0)) {
-            Toast.makeText(this,"姓名不能为空",Toast.LENGTH_SHORT)
+            Toast.makeText(this,"姓名不能为空",Toast.LENGTH_SHORT).show()
             return
         }
         if (!(auth_idcard_num.text!=null&&auth_idcard_num.text.length>0)) {
-            Toast.makeText(this,"身份证号不能为空",Toast.LENGTH_SHORT)
+            Toast.makeText(this,"身份证号不能为空",Toast.LENGTH_SHORT).show()
             return
         }
-        if (!(auth_idcard_num.text!=null&&auth_idcard_num.text.length!=18)) {
-            Toast.makeText(this,"身份证号格式不正确",Toast.LENGTH_SHORT)
+        if (auth_idcard_num.text==null||auth_idcard_num.text.length!=18) {
+            Toast.makeText(this,"身份证号格式不正确",Toast.LENGTH_SHORT).show()
             return
         }
         Log.e("commit",TypeConverter.encodeBase64File(imagePath1.toString()))
@@ -123,6 +123,7 @@ class AuthActivity : Activity(), View.OnClickListener {
         stringMap.put("handImg",TypeConverter.encodeBase64File(imagePath3.toString()))
 
         auth_commit.isClickable = false
+        dialog?.show()
         OkGo.post<WSResult<String>>(HttpContants.PERFECT)
                 .params(stringMap)
                 .execute(object : JsonCallback<WSResult<String>>() {
@@ -169,6 +170,12 @@ class AuthActivity : Activity(), View.OnClickListener {
         }
     }
 
+    @Subscribe
+    fun onMessageEvent(event: FinishEvent) {
+        if (event.event == 2) {
+            finish()
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)

@@ -135,6 +135,7 @@ class PerfectInfoActivity : Activity() {
                             ErrorCode.SUCCESS -> {
                                 //完善成功,跳转到首页
                                 startActivity(Intent(this@PerfectInfoActivity, MainActivity::class.java))
+                                EventBus.getDefault().post(FinishEvent(2))
                                 finish()
                             }
                         }
